@@ -1,31 +1,510 @@
-<h2>👥 Online Status</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💜 Martha & Eno 💜</title>
 
-<div class="person">
-  Martha: <span id="marthaStatus" class="offline">🔴 Offline</span>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #49365c;
+  background: linear-gradient(135deg, #eadcff, #fff5ff, #e5f5ff);
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1050px;
+  margin: auto;
+  padding: 30px 18px 50px;
+}
+
+.hero {
+  text-align: center;
+  background: rgba(255,255,255,.9);
+  border-radius: 32px;
+  padding: 35px 20px;
+  box-shadow: 0 15px 40px rgba(80,50,110,.15);
+}
+
+h1 {
+  margin: 0;
+  font-size: 55px;
+  color: #7546a8;
+}
+
+.subtitle {
+  font-size: 19px;
+  color: #806f8c;
+}
+
+.people {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 25px;
+}
+
+.card {
+  background: white;
+  border-radius: 25px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(80,50,110,.12);
+}
+
+.avatar {
+  font-size: 65px;
+}
+
+.name {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.status {
+  font-weight: bold;
+  margin: 10px;
+}
+
+.online {
+  color: #35a866;
+}
+
+.offline {
+  color: #bd6684;
+}
+
+button {
+  border: none;
+  border-radius: 15px;
+  padding: 12px 18px;
+  margin: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  background: #8c5bc5;
+  color: white;
+  box-shadow: 0 5px #674294;
+}
+
+button:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px #674294;
+}
+
+.off {
+  background: #e8ddea;
+  color: #604d6d;
+  box-shadow: 0 5px #bba9c0;
+}
+
+.both {
+  margin-top: 25px;
+  padding: 25px;
+  border-radius: 25px;
+  background: linear-gradient(135deg,#8c5bc5,#b779dc);
+  color: white;
+  text-align: center;
+  box-shadow: 0 12px 30px rgba(100,65,140,.25);
+}
+
+.both h2 {
+  margin: 0 0 8px;
+  font-size: 30px;
+}
+
+.games {
+  margin-top: 30px;
+}
+
+.games h2 {
+  text-align: center;
+  color: #7546a8;
+}
+
+.gamegrid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 18px;
+}
+
+.game {
+  background: white;
+  border-radius: 22px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(80,50,110,.1);
+}
+
+.result {
+  min-height: 25px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+footer {
+  text-align: center;
+  margin-top: 30px;
+  color: #806f8c;
+}
+
+@media(max-width:700px) {
+  .people,
+  .gamegrid {
+    grid-template-columns: 1fr;
+  }
+
+  h1 {
+    font-size: 40px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="hero">
+    <h1>💜 Martha & Eno 💜</h1>
+    <p class="subtitle">our little online hangout ✨</p>
+    <div>🌷 friends' corner 🌷</div>
+  </div>
+
+  <div class="people">
+
+    <div class="card">
+      <div class="avatar">🐰</div>
+      <div class="name">Martha</div>
+      <div id="marthaStatus" class="status offline">
+        🔴 Offline
+      </div>
+
+      <button onclick="setOnline('Martha')">
+        🟢 I'm Online!
+      </button>
+
+      <button class="off" onclick="setOffline()">
+        🔴 Go Offline
+      </button>
+    </div>
+
+
+    <div class="card">
+      <div class="avatar">🦊</div>
+      <div class="name">Eno</div>
+      <div id="enoStatus" class="status offline">
+        🔴 Offline
+      </div>
+
+      <button onclick="setOnline('Eno')">
+        🟢 I'm Online!
+      </button>
+
+      <button class="off" onclick="setOffline()">
+        🔴 Go Offline
+      </button>
+    </div>
+
+  </div>
+
+
+  <div id="bothOnline" class="both" style="display:none">
+    <h2>🎉 YOU'RE BOTH ONLINE!! 🎉</h2>
+    <p>AHHHH HI!! 💜✨</p>
+  </div>
+
+
+  <div class="games">
+
+    <h2>🎮 Mini-game corner</h2>
+
+    <div class="gamegrid">
+
+      <div class="game">
+        <h3>👆 Button Smash</h3>
+        <p>How many clicks can you get?</p>
+
+        <button onclick="smash()">
+          SMASH!
+        </button>
+
+        <div id="score" class="result">
+          Score: 0
+        </div>
+      </div>
+
+
+      <div class="game">
+        <h3>🔮 Guess 1–10</h3>
+        <p>Can you guess the number?</p>
+
+        <button onclick="guessNumber()">
+          GUESS!
+        </button>
+
+        <div id="guessResult" class="result">
+          🤔
+        </div>
+      </div>
+
+
+      <div class="game">
+        <h3>🎲 Dice Roll</h3>
+        <p>Roll the dice!</p>
+
+        <button onclick="rollDice()">
+          ROLL!
+        </button>
+
+        <div id="dice" class="result">
+          🎲
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer>
+    made with 💜 for Martha & Eno
+  </footer>
+
 </div>
 
-<div class="person">
-  Eno: <span id="enoStatus" class="offline">🔴 Offline</span>
-</div>
 
-<button class="onlineButton" onclick="marthaOnline()">
-  🟢 Martha is Online
-</button>
+<script>
 
-<button class="offlineButton" onclick="marthaOffline()">
-  🔴 Martha is Offline
-</button>
+/* -------------------------
+   MINI GAMES
+------------------------- */
 
-<br>
+let score = 0;
 
-<button class="onlineButton" onclick="enoOnline()">
-  🟢 Eno is Online
-</button>
+function smash() {
+  score++;
 
-<button class="offlineButton" onclick="enoOffline()">
-  🔴 Eno is Offline
-</button>
+  document.getElementById("score").textContent =
+    "Score: " + score + " 🔥";
+}
 
-<div id="message">
-  Waiting for both of you... 💭
-</div>
+function guessNumber() {
+
+  const secret =
+    Math.floor(Math.random() * 10) + 1;
+
+  const answer =
+    prompt("Pick a number from 1 to 10!");
+
+  if (answer === null) return;
+
+  document.getElementById("guessResult").textContent =
+    Number(answer) === secret
+      ? "🎉 YOU GOT IT!"
+      : "The number was " + secret + "!";
+}
+
+function rollDice() {
+
+  const number =
+    Math.floor(Math.random() * 6) + 1;
+
+  document.getElementById("dice").textContent =
+    "🎲 " + number;
+}
+
+
+/* -------------------------
+   SOUND
+------------------------- */
+
+let audioUnlocked = false;
+
+function unlockSound() {
+
+  const audio =
+    new Audio(
+      "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA="
+    );
+
+  audio.volume = 0.01;
+
+  audio.play()
+    .then(() => {
+      audioUnlocked = true;
+    })
+    .catch(() => {});
+}
+
+document.addEventListener("click", unlockSound, {
+  once: true
+});
+
+
+function ding() {
+
+  const AudioContext =
+    window.AudioContext ||
+    window.webkitAudioContext;
+
+  if (!AudioContext) return;
+
+  const ctx = new AudioContext();
+
+  const oscillator =
+    ctx.createOscillator();
+
+  const gain =
+    ctx.createGain();
+
+  oscillator.frequency.value = 880;
+
+  gain.gain.setValueAtTime(
+    0.25,
+    ctx.currentTime
+  );
+
+  gain.gain.exponentialRampToValueAtTime(
+    0.001,
+    ctx.currentTime + 0.8
+  );
+
+  oscillator.connect(gain);
+  gain.connect(ctx.destination);
+
+  oscillator.start();
+
+  oscillator.stop(
+    ctx.currentTime + 0.8
+  );
+}
+
+
+/* -------------------------
+   REALTIME CONNECTION
+-------------------------
+
+   WE WILL PUT YOUR
+   SUPABASE DETAILS HERE.
+
+------------------------- */
+
+// DON'T PUT RANDOM VALUES HERE.
+// We'll add your real project
+// URL + publishable key after
+// the realtime service is set up.
+
+const SUPABASE_URL =
+  "PUT_YOUR_SUPABASE_URL_HERE";
+
+const SUPABASE_KEY =
+  "PUT_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
+
+
+/*
+   The realtime section will:
+
+   Martha computer
+          ↓
+       SERVER
+          ↓
+   Eno computer
+
+   and
+
+   Eno computer
+          ↓
+       SERVER
+          ↓
+   Martha computer
+
+   So BOTH browsers can know
+   when the other person appears.
+*/
+
+
+let myName = null;
+
+
+/* -------------------------
+   LOCAL STATUS DISPLAY
+------------------------- */
+
+function showStatus(name, online) {
+
+  const element =
+    name === "Martha"
+      ? document.getElementById("marthaStatus")
+      : document.getElementById("enoStatus");
+
+  element.textContent =
+    online
+      ? "🟢 Online"
+      : "🔴 Offline";
+
+  element.className =
+    "status " +
+    (online ? "online" : "offline");
+}
+
+
+function setOnline(name) {
+
+  myName = name;
+
+  showStatus(name, true);
+
+  checkBoth();
+}
+
+
+function setOffline() {
+
+  if (!myName) return;
+
+  showStatus(myName, false);
+
+  myName = null;
+
+  checkBoth();
+}
+
+
+function checkBoth() {
+
+  const m =
+    document.getElementById("marthaStatus")
+      .textContent.includes("Online");
+
+  const e =
+    document.getElementById("enoStatus")
+      .textContent.includes("Online");
+
+  document.getElementById("bothOnline")
+    .style.display =
+      (m && e) ? "block" : "none";
+}
+
+
+/*
+ IMPORTANT:
+
+ The buttons above only change
+ YOUR browser for now.
+
+ The next step connects them
+ between computers.
+
+ That is where the shared
+ realtime connection goes.
+*/
+
+</script>
+
+</body>
+</html>
